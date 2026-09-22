@@ -1,0 +1,30 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# AI models
+*.pt
+*.onnx
+*.engine
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Generated data
+data/
+recordings/
+logs/
+
+# Frontend
+node_modules/
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
