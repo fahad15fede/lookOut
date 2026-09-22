@@ -1,22 +1,18 @@
-name: lookOut
+name: lookOut CI
 
 on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
 
 jobs:
-
   vision-tests:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -30,6 +26,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r vision/requirements.txt
 
-      - name: Run tests
+      - name: Run vision tests
         run: |
           pytest vision/tests -v
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: vision-tests
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build vision Docker image
+        run: |
+          docker build -t lookout-vision -f vision/Dockerfile .
+
+      - name: Test vision Docker image
+        run: |
+          docker run --rm lookout-vision python -m pytest tests -v
