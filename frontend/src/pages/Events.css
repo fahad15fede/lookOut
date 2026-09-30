@@ -1,0 +1,144 @@
+.events-page {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.events-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.events-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.filter-btn {
+    padding: 0.625rem 1.25rem;
+    background-color: #1e2130;
+    color: #8b92a7;
+    border: 1px solid #2a2d3a;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    background-color: #252836;
+    border-color: #3a3d4a;
+}
+
+.filter-btn-active {
+    background-color: #3b82f6;
+    color: #ffffff;
+    border-color: #3b82f6;
+}
+
+.search-box {
+    flex: 0 1 300px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background-color: #1e2130;
+    color: #ffffff;
+    border: 1px solid #2a2d3a;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+}
+
+.search-input::placeholder {
+    color: #6b7280;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.events-content {
+    margin-top: 1.5rem;
+}
+
+.events-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    color: #8b92a7;
+}
+
+.events-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    text-align: center;
+    padding: 2rem;
+}
+
+.error-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.events-error h2 {
+    color: #ef4444;
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.events-error p {
+    color: #8b92a7;
+    margin: 0 0 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .events-page {
+        padding: 1.5rem;
+    }
+
+    .events-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .events-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-buttons {
+        flex-wrap: wrap;
+    }
+
+    .search-box {
+        flex: 1 1 auto;
+    }
+}

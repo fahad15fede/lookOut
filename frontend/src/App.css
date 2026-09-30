@@ -1,0 +1,20 @@
+.app {
+    min-height: 100vh;
+    background-color: #0f1117;
+}
+
+.app-layout {
+    display: flex;
+}
+
+.app-main {
+    flex: 1;
+    min-height: calc(100vh - 77px);
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    .app-main {
+        min-height: calc(100vh - 65px);
+    }
+}

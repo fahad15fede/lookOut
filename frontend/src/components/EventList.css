@@ -1,0 +1,20 @@
+.event-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.event-list-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .event-list {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}

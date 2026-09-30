@@ -1,0 +1,40 @@
+.header {
+    background-color: #1a1d29;
+    border-bottom: 1px solid #2a2d3a;
+    padding: 1.5rem 2rem;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.header-title h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.header-subtitle {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.875rem;
+    color: #8b92a7;
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 1rem 1.5rem;
+    }
+
+    .header-title h1 {
+        font-size: 1.5rem;
+    }
+
+    .header-subtitle {
+        font-size: 0.75rem;
+    }
+}

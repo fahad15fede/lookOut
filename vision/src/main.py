@@ -3,6 +3,7 @@ import cv2
 from detector import PersonDetector
 from intrusion import IntrusionDetector
 from event_manager import EventManager
+from api_clients import LookoutAPIClient
 
 def main():
 
@@ -11,15 +12,37 @@ def main():
     # Temporary boundary position
     intrusion_detector = IntrusionDetector(boundary_y=350)
 
-    event_manager = EventManager()
+    CAMERA_ID = 1
+    CAMERA_SOURCE = 1
 
-    camera = cv2.VideoCapture(0)
+    event_manager = EventManager(
+            camera_id=CAMERA_ID
+        )
+    api_client = LookoutAPIClient()
 
-    camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-    camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+    camera = cv2.VideoCapture(CAMERA_SOURCE)
+
 
     if not camera.isOpened():
+        api_client.send_camera_status(
+            camera_id=CAMERA_ID,
+            camera_status="offline",
+            vision_status="offline"
+        )
         raise RuntimeError("Could not open camera.")
+
+    print("[CAMERA] Camera opened successfully")
+
+    response = api_client.send_camera_status(
+        camera_id=CAMERA_ID,
+        camera_status="online",
+        vision_status="running"
+    )
+
+    print("[CAMERA STATUS RESPONSE]", response)
+    
+    camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     
     width = int(camera.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -43,7 +66,7 @@ def main():
 
         if not success:
             break
-
+        raw_frame = frame.copy()
         result = detector.track(frame)
 
         # Draw our security boundary
@@ -59,10 +82,6 @@ def main():
             for box, track_id in zip(coordinates, track_ids):
 
                 x1, y1, x2, y2 = map(int, box)
-                person_crop = frame[y1:y2, x1:x2]
-
-                if person_crop.size > 0:
-                    cv2.imshow(f"Person ID {track_id}", person_crop)
 
                 # Bounding box
                 cv2.rectangle(
@@ -111,13 +130,20 @@ def main():
 
                     event = event_manager.save_intrusion(
                         frame,
-                        track_id
+                        track_id,
+                        box
                     )
 
                     print("\n🚨 INTRUSION DETECTED")
                     print(f"Person ID: {event['track_id']}")
                     print(f"Time: {event['timestamp']}")
                     print(f"Evidence: {event['image_path']}")
+                    print(f"Person crop: {event['crop_path']}")
+
+                    saved_event = api_client.send_intrusion_event(event)
+
+                    if saved_event:
+                        print(f"Stored in database with ID: {saved_event['id']}")
 
                 else:
 
@@ -141,6 +167,12 @@ def main():
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
+
+    api_client.send_camera_status(
+        camera_id= CAMERA_ID,
+        camera_status="offline",
+        vision_status="offline"
+    )
     camera.release()
     cv2.destroyAllWindows()
 
